@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { YoutubeIframe } from '@vue-youtube/component';
-import { ref, computed, onUnmounted } from 'vue';
+import { ref, computed, onUnmounted, nextTick } from 'vue';
 import queue from '../queue';
 
-let videoId = ref('1QkKDY1-NN0');
+let videoId = ref('zxt-_P_WXtM'); // example of long titleName
+// let videoId = ref('XAwXaGQwoZ0');  // example of short titleName
 const player = ref<any>(null);
 const nowTime = ref(0);
 const endTime = ref(0);
@@ -13,16 +14,48 @@ const intervalId = ref<number | null>(null);
 const isPlaying = ref(false);
 let albumTitle = queue.get_albumTitle();
 
+const titleElement = ref<HTMLElement | null>(null);
+const needsScroll = ref(false);
+const parentWidth = ref(0);
+const textWidth = ref(0);
+const isAnimating = ref(false);
+const SCROLL_SPEED = 40; // px/s
+const WAIT_TIME = 2000; // ms
+
 let next_song;
 const togglePlay = async () => {
-  player.value?.togglePlay(); // change play-pause
+  player.value?.togglePlay(); // Change play-pause
 };
 
-// Get total time and video title
 const onReady = (event: { target: any }) => {
-  endTime.value = Math.floor(event.target.getDuration());
+  endTime.value = Math.floor(event.target.getDuration()); // Get total time and video title
   title.value = event.target.getVideoData();
   titleName.value = title.value['title'];
+
+  nextTick(() => { // Determine if scrolling is necessary
+  if (titleElement.value) {
+    parentWidth.value = titleElement.value.parentElement?.offsetWidth || 0;
+    textWidth.value = titleElement.value.scrollWidth;
+    needsScroll.value = textWidth.value > parentWidth.value;
+
+    if (needsScroll.value) {
+      startScrolling();
+    }
+  }
+});
+};
+
+// Calculate the distance to scroll
+const animationDuration = computed(() => {
+  const distance = textWidth.value;
+  return needsScroll.value ? distance / SCROLL_SPEED : 0;
+});
+
+// scrolling function
+const startScrolling = async () => {
+  if (!needsScroll.value) return;
+  await new Promise(resolve => setTimeout(resolve, WAIT_TIME));
+  isAnimating.value = true;
 };
 
 // When the playback state is changed
@@ -93,7 +126,19 @@ onUnmounted(() => {
       @ready="onReady" 
       @state-change="onStateChange" />
     <div class="info_box">
-      <div class="title">{{ titleName }}</div>
+      <div class="title">
+        <div ref="titleElement"
+            class="scroll-container"
+            :class="{ scrolling: isAnimating }"
+            :style="isAnimating ? `--animation-duration: ${animationDuration}s;` : ''">
+          <span v-if="needsScroll" class="scroll-text">
+            {{ titleName }}&nbsp;&nbsp;&nbsp;{{ titleName }}
+          </span>
+          <span v-else class="single-text">
+            {{ titleName }}
+          </span>
+        </div>
+      </div>
       <div class="album">{{albumTitle}}</div>
       <div class="time_container">
         <div class="nowtime">{{ formattedNowTime }}</div>
