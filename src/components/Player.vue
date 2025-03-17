@@ -9,7 +9,7 @@ const player = ref<any>(null);
 const nowTime = ref(0);
 const endTime = ref(0);
 const title = ref();
-const titleName = ref();
+let titleName = ref();
 const intervalId = ref<number | null>(null);
 const isPlaying = ref(false);
 let albumTitle = queue.get_albumTitle();
@@ -68,15 +68,12 @@ const startScrolling = async () => {
 
 // When the playback state is changed
 const onStateChange = (event: { target: any; data: number }) => {
-  console.log("onStateChange");
   if (event.data === 1) { // start
-    console.log("start(1)");
     isPlaying.value = true; // play-pause-button
     intervalId.value = window.setInterval(() => { // Get current time per 250ms
       nowTime.value = Math.floor(event.target.getCurrentTime());
     }, 250);
   } else if (event.data === 0) { // end(0)
-    console.log("end(0)");
     next_song = queue.get_next();
     if(next_song == null){ //check queue whather exist next song
       isPlaying.value = false;
@@ -86,9 +83,9 @@ const onStateChange = (event: { target: any; data: number }) => {
       }
     }else{
       videoId = ref(next_song)
+      console.log("Playing song is updated");
     }
   } else if (event.data === 2) { // stop (2)
-    console.log(2);
     isPlaying.value = false; // play-pause-button
     if (intervalId.value !== null) {
       clearInterval(intervalId.value);
@@ -115,6 +112,17 @@ onUnmounted(() => {
     clearInterval(intervalId.value);
   }
 });
+
+//it might be caused in updating playing album.
+const interval = setInterval(() => {
+  const nowSong = queue.get_nowSong();
+  if(nowSong != null){
+    if(nowSong != videoId.value){
+      videoId = ref(nowSong);
+      //if not playing, i will play!
+    }
+  }
+}, 100);
 </script>
 
 <template>

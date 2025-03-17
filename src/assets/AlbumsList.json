@@ -1,0 +1,24 @@
+[
+  {
+    "albumTitle": {"ja":"アルバム1", "en": "Album1"},
+    "songs": [
+      {
+        "title": { "ja": "曲1", "en": "Song 1" },
+        "videoId": "dQw4w9WgXcQ"
+      },
+      {
+        "title": { "ja": "曲2", "en": "Song 2" },
+        "videoId": "3JZ_D3ELwOQ"
+      }
+    ]
+  },
+  {
+    "albumTitle": {"ja":"アルバム2", "en": "Album2"},
+    "songs": [
+      {
+        "title": { "ja": "曲A", "en": "Song A" },
+        "videoId": "L_jWHffIx5E"
+      }
+    ]
+  }
+]

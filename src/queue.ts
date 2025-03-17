@@ -12,19 +12,29 @@ function get_albumTitle(): string {
 }
 
 function get_next(): (string|null) {
-    if(queue.length == 0){
+    if(queue.length == 1){
         console.log("queue was ended");
         return null;
     }else{
-    nextSong = queue[0];
+    nextSong = queue[1];
     queue.shift();
     console.log("i will play" + nextSong);
     return nextSong;
     }
 };
 
-function add_album(VideoIdArray: string[]) {
+function get_nowSong(): (string|null) {
+    if(queue.length == 0){
+        console.log("Queue is empty now.");
+        return null;
+    }else{
+        return queue[0];
+    }
+}
+
+function add_album(VideoIdArray: string[],AlbumTitle: string) {
     queue = VideoIdArray;
+    albumTitle = AlbumTitle;
 }
 
 function del_all() {
@@ -36,5 +46,4 @@ function interrupt(VideoIdArray: string[]) {
     queue = VideoIdArray;
 };
 
-
-export default {get_albumTitle, get_next, add_album, del_all, interrupt};
+export default {get_albumTitle, get_next, get_nowSong, add_album, del_all, interrupt};
