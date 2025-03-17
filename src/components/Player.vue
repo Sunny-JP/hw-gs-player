@@ -134,7 +134,7 @@ const renderKey = queue.get_playerRenderKey();
       </div>
       <div class="album">{{albumTitle}}</div>
       <div class="time_container">
-        <div v-for="(SongName, index) in queue.get_queueTitleList()">
+        <div v-for="(, index) in queue.get_queueTitleList()">
           #{{ index }}　
         </div>
         <div class="nowtime">{{ formattedNowTime }}</div>
