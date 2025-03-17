@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import AlbumList from '../assets/AlbumsList.json';
-import queue from '../queue';
+import queue, { type Queue } from '../queue';
 function add_play_album(albumIndex: number) {
-  console.log("The Album will play! The Album index is" + albumIndex);
-  const albumSongList = AlbumList[albumIndex].songs.map((songs) => songs.videoId)
+  console.log("The Album will play! The Album index is " + albumIndex);
+  const albumSongList: Queue[] = AlbumList[albumIndex].songs.map((songs) => {
+    const queueinter: Queue = {videoId: songs.videoId, SongName: songs.title.ja}
+    return queueinter;});
   queue.add_album(albumSongList,AlbumList[albumIndex].albumTitle.ja);// *.ja will change depends on using languare
 }
 </script>

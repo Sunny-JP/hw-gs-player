@@ -3,7 +3,6 @@ import Top from "./components/AlbumList.vue";
 import About from "./components/About.vue";
 import Enquiries from './components/Enquiries.vue';
 import Info from './components/Info.vue';
-import Player from './components/Player.vue';
 import Policy from './components/Policy.vue';
 import Terms from './components/Terms.vue';
 
@@ -12,7 +11,6 @@ const routes = [
   { path: '/about', name: 'about', component: About },
   { path: '/enquiries', name: 'enquiries', component: Enquiries },
   { path: '/info', name: 'info', component: Info },
-  { path: '/player', name: 'player', component: Player },
   { path: '/policy', name: 'policy', component: Policy },
   { path: '/terms', name: 'terms', component: Terms },
 ]

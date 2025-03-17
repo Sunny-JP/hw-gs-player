@@ -3,12 +3,12 @@ import { YoutubeIframe } from '@vue-youtube/component';
 import { ref, computed, onUnmounted, nextTick } from 'vue';
 import queue from '../queue';
 
-let videoId = ref('zxt-_P_WXtM'); // example of long titleName
+//let videoId = ref('zxt-_P_WXtM'); // example of long titleName
 // let videoId = ref('XAwXaGQwoZ0');  // example of short titleName
 const player = ref<any>(null);
 const nowTime = ref(0);
 const endTime = ref(0);
-const title = ref();
+let title = ref();
 let titleName = ref();
 const intervalId = ref<number | null>(null);
 const isPlaying = ref(false);
@@ -30,7 +30,6 @@ const toggleFullscreen = () => {
 };
 
 
-let next_song;
 const togglePlay = async () => {
   player.value?.togglePlay(); // Change play-pause
 };
@@ -74,17 +73,7 @@ const onStateChange = (event: { target: any; data: number }) => {
       nowTime.value = Math.floor(event.target.getCurrentTime());
     }, 250);
   } else if (event.data === 0) { // end(0)
-    next_song = queue.get_next();
-    if(next_song == null){ //check queue whather exist next song
-      isPlaying.value = false;
-      if(intervalId.value !== null) {
-        clearInterval(intervalId.value);
-        intervalId.value = null;
-      }
-    }else{
-      videoId = ref(next_song)
-      console.log("Playing song is updated");
-    }
+    queue.get_next();
   } else if (event.data === 2) { // stop (2)
     isPlaying.value = false; // play-pause-button
     if (intervalId.value !== null) {
@@ -113,29 +102,17 @@ onUnmounted(() => {
   }
 });
 
-//it might be caused in updating playing album.
-const interval = setInterval(() => {
-  const nowSong = queue.get_nowSong();
-  if(nowSong != null){
-    if(nowSong != videoId.value){
-      videoId = ref(nowSong);
-      //if not playing, i will play!
-    }
-  }else if(false){
-    clearInterval(interval);
-  }
-}, 100);
+const renderKey = queue.get_playerRenderKey();
 </script>
 
 <template>
-  <div :class="{ 'container': !isFullscreen, 'fscontainer': isFullscreen }">
-    <youtube-iframe 
-      :video-id="videoId"
+  <div :class="{ 'container': !isFullscreen, 'fscontainer': isFullscreen }" :key="renderKey">
+    <youtube-iframe
+      :video-id=queue.get_nowSong()
       :player-vars="{
         autoplay: 1,
         iv_load_policy: 3,
         loop: 1,
-        playlist: videoId,
         controls: 0,
         playsinline: 1,
         rel: 0
@@ -169,6 +146,13 @@ const interval = setInterval(() => {
         <div class="bar bar-right"></div>
       </div>
     </button>
+    <button @click="queue.onLoopButton()">
+      LoopButton
+    </button>
+    Queue
+    <div v-for="(SongName, index) in queue.get_queueTitleList()">
+      {{ index }} : {{ SongName }}
+    </div>   
   </div>
   <button @click="toggleFullscreen" class="toggle-btn">
         {{ isFullscreen ? '通常表示' : 'フルスクリーン' }}
