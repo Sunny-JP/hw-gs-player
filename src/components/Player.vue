@@ -30,6 +30,7 @@ const toggleFullscreen = () => {
 };
 
 
+
 const togglePlay = async () => {
   player.value?.togglePlay(); // Change play-pause
 };
