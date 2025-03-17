@@ -23,7 +23,7 @@ onBeforeUnmount(() => {
   <header>
     <nav>
       <div class="title_bar">
-        <p>GS Player</p>
+        <p><router-link to="/">GS Player</router-link></p>
       </div>
       <div class="hamburger_btn" @click.stop="MenuButton = !MenuButton">
         <span class="line line_01" :class="{ 'btn_line01': MenuButton }"></span>

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
-        <h1>お問い合わせ</h1>
-    </div>
+  <div class="page">
+    <h1>お問い合わせ</h1>
+  </div>
 </template>

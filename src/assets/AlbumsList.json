@@ -1,22 +1,37 @@
 [
   {
-    "albumTitle": {"ja":"アルバム1", "en": "Album1"},
+    "albumTitle": {
+      "ja": "アルバム1",
+      "en": "Album1"
+    },
     "songs": [
       {
-        "title": { "ja": "曲1", "en": "Song 1" },
+        "title": {
+          "ja": "曲1",
+          "en": "Song 1"
+        },
         "videoId": "QcrxntJERRs"
       },
       {
-        "title": { "ja": "曲2", "en": "Song 2" },
+        "title": {
+          "ja": "曲2",
+          "en": "Song 2"
+        },
         "videoId": "BrpIRBW4g0A"
       }
     ]
   },
   {
-    "albumTitle": {"ja":"アルバム2", "en": "Album2"},
+    "albumTitle": {
+      "ja": "アルバム2",
+      "en": "Album2"
+    },
     "songs": [
       {
-        "title": { "ja": "曲A", "en": "Song A" },
+        "title": {
+          "ja": "曲A",
+          "en": "Song A"
+        },
         "videoId": "L_jWHffIx5E"
       }
     ]

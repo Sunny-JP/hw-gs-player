@@ -13,9 +13,10 @@ function add_play_album(albumIndex: number) {
 <template>
   <div class="page">
     <h1>Album List</h1>
+    曲タイトルをクリックするとPlayer表示を切り替えられるよ
     <div v-for="(AlbumList, index) in AlbumList">
       <button
-      v-on:click="add_play_album(index)">
+      v-on:click="add_play_album(index)" class="button_album">
       AlbumTitle: {{ AlbumList.albumTitle.ja }}
       </button>
     </div>
@@ -23,4 +24,11 @@ function add_play_album(albumIndex: number) {
 </template>
 
 <style scoped>
+.button_album {
+  background: #4c4c4c;
+  color: #ffffff;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
 </style>
