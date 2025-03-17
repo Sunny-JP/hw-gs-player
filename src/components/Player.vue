@@ -307,6 +307,7 @@ const renderKey = queue.get_playerRenderKey();
 }
 
 .container .time_container {
+  font-family: "Lekton", monospace;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -322,12 +323,13 @@ const renderKey = queue.get_playerRenderKey();
 }
 
 .fscontainer .fs_time_container {
+  font-family: "Lekton", monospace;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-top: 0.5em;
   margin-bottom: 2em;
-  font-size: clamp(1.5px, calc(3vw - 1px), 15px);
+  font-size: clamp(1.75px, calc(3.5vw - 1.15px), 17.5px);
 }
 
 .container .endtime {
