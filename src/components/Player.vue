@@ -121,6 +121,8 @@ const interval = setInterval(() => {
       videoId = ref(nowSong);
       //if not playing, i will play!
     }
+  }else if(false){
+    clearInterval(interval);
   }
 }, 100);
 </script>
