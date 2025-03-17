@@ -22,6 +22,14 @@ const isAnimating = ref(false);
 const SCROLL_SPEED = 40; // px/s
 const WAIT_TIME = 2000; // ms
 
+
+const isFullscreen = ref(false);
+
+const toggleFullscreen = () => {
+  isFullscreen.value = !isFullscreen.value;
+};
+
+
 let next_song;
 const togglePlay = async () => {
   player.value?.togglePlay(); // Change play-pause
@@ -110,7 +118,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="container">
+  <div :class="{ 'container': !isFullscreen, 'fscontainer': isFullscreen }">
     <youtube-iframe 
       :video-id="videoId"
       :player-vars="{
@@ -152,7 +160,19 @@ onUnmounted(() => {
       </div>
     </button>
   </div>
+  <button @click="toggleFullscreen" class="toggle-btn">
+        {{ isFullscreen ? '通常表示' : 'フルスクリーン' }}
+      </button>
 </template>
 
 <style scoped>
+.toggle-btn {
+  position: fixed;
+  bottom: 90px;
+  background: #4c4c4c;
+  color: #ffffff;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
 </style>

@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="container">
+  <div class="page">
     <h1>Album List</h1>
   </div>
 </template>
