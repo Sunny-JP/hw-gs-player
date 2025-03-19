@@ -308,7 +308,7 @@ const renderKey = queue.get_playerRenderKey();
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-size: clamp(1.5px, calc(3vw - 1px), 15px);
+  font-size: clamp(1.75px, calc(3.5vw - 1.15px), 17.5px);
 }
 
 .container .fs_time_container {
@@ -326,7 +326,7 @@ const renderKey = queue.get_playerRenderKey();
   align-items: center;
   margin-top: 0.5em;
   margin-bottom: 2em;
-  font-size: clamp(1.75px, calc(3.5vw - 1.15px), 17.5px);
+  font-size: clamp(2px, calc(4vw - 1.3px), 20px);
 }
 
 .container .endtime {
