@@ -353,6 +353,12 @@ const renderKey = queue.get_playerRenderKey();
   justify-content: center;
 }
 
+.container .play-pause-button{
+  font-size: clamp(1.5px, 3vw, 15px);
+  padding-left: clamp(1px, 1vw, 5px);
+  padding-right: clamp(1px, 1vw, 5px);
+}
+
 .fscontainer .play-pause-button {
   position: relative;
   top: 55px;

@@ -11,6 +11,7 @@ body {
   font-weight: 400;
   background: #000000;
   -webkit-text-size-adjust: none;
+  user-select: none;
 }
 
 

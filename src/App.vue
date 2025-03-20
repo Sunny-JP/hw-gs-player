@@ -34,8 +34,6 @@ onBeforeUnmount(() => {
         <ul>
           <!-- 将来的には多言語対応する．中，韓ではそれぞれNoto sans C，Kを用いる -->
           <li><router-link to="/" @click="MenuButton = false">Top</router-link></li>
-          <li><router-link to="/" @click="MenuButton = false">My List</router-link></li>
-          <hr>
           <li><router-link to="/about" @click="MenuButton = false">About</router-link></li>
           <li><router-link to="/terms" @click="MenuButton = false">利用規約</router-link></li>
           <li><router-link to="/policy" @click="MenuButton = false">プライバシーポリシー</router-link></li>
