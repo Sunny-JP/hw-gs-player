@@ -1,0 +1,260 @@
+/* overall frame */
+.container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 10vw;
+  max-height: 60px;
+  background: #000000;
+  border-top: #404040 solid 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(1px, 2vw, 10px);
+  padding-bottom: clamp(1px, 2vw, 10px);
+  flex-direction: row;
+}
+
+.fscontainer {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background: #000000;
+}
+
+
+/* info_box */
+.container .info_box {
+  margin-left: 10px;
+  padding: 0px 10px 0px 0px;
+  width: 70vw;
+  max-width: 300px;
+}
+
+.fscontainer .info_box {
+  position: relative;
+  top: 10px;
+  margin: 5px;
+  width: 100%;
+  max-width: 500px;
+}
+
+
+/* title */
+.title {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.container .title {
+  font-size: clamp(2px, calc(4vw - 1.3px), 20px);
+}
+
+.fscontainer .title {
+  font-size: clamp(3px, calc(6vw - 2px), 30px);
+}
+
+
+/* time */
+.container .time_container {
+  font-family: "Lekton", monospace;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: clamp(1.75px, calc(3.5vw - 1.15px), 17.5px);
+}
+
+.fscontainer .fs_time_container {
+  font-family: "Lekton", monospace;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  font-size: clamp(2px, calc(4vw - 1.3px), 20px);
+}
+
+.container .fs_time_container,
+.fscontainer .time_container {
+  font-size: 0;
+}
+
+.container .nowtime,
+.container .endtime {
+  padding-top: min(0.15vw, 2px);
+}
+
+.container .endtime {
+  margin-left: 5px;
+  text-align: right;
+}
+
+.container .endtime::before {
+  content: "-";
+  padding-right: 5px;
+}
+
+.fscontainer .endtime {
+  margin-left: auto;
+  text-align: right;
+}
+
+
+/* album */
+.container .album {
+  font-family: "Poppins", "Noto Sans JP", "Helvetica Neue", "Helvetica", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: clamp(1.5px, calc(3vw - 1px), 15px);
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.fscontainer .fs_album_container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: clamp(2px, calc(4vw - 1.3px), 20px);
+}
+
+.fscontainer .fs_album {
+  margin-right: clamp(2px, calc(2vw), 12px);
+  cursor: pointer;
+}
+
+.container .fs_album_container,
+.fscontainer .album {
+  font-size: 0;
+  display: none;
+}
+
+.fs_loop,
+.fs_fav {
+  cursor: pointer;
+  padding-left: clamp(2px, calc(2vw), 12px);
+  margin-top: 4px;
+}
+
+svg {
+  width: clamp(2px, calc(6vw), 30px);
+  height: clamp(2px, calc(6vw), 30px);
+}
+
+
+/* control button */
+.play-pause-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.container .play-pause-button {
+  font-size: clamp(1.5px, 3vw, 15px);
+  padding-left: clamp(1px, 1vw, 5px);
+  padding-right: clamp(1px, 1vw, 5px);
+}
+
+.fscontainer .play-pause-button {
+  font-size: clamp(2px, 4vw, 20px);
+  position: relative;
+  top: 35px;
+  padding-bottom: 30px;
+}
+
+.play-pause-icon {
+  position: relative;
+  width: 8vw;
+  max-width: 2em;
+  height: 9vw;
+  max-height: 2.2em;
+}
+
+.bar {
+  position: absolute;
+  background: white;
+  width: 0.9em;
+  height: 2.2em;
+  transition: all 0.3s ease-in-out;
+}
+
+.bar-left {
+  left: 0.12em;
+  clip-path: polygon(0% 0%, 100% 26%, 100% 74%, 0% 100%);
+}
+
+.bar-right {
+  right: 0.12em;
+  clip-path: polygon(0% 25%, 100% 50%, 0% 75%);
+}
+
+.playing .bar-left,
+.playing .bar-right {
+  clip-path: inset(0 0 0 0);
+  width: 0.5em;
+}
+
+
+/* slide animation */
+.slide-down {
+  animation: slideDown 0.25s ease forwards;
+}
+
+.slide-up {
+  animation: slideUp 0.25s ease forwards;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+  40%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+  40%,
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* scrollbar hidden */
+.title,
+.album,
+.fs_album {
+  white-space: nowrap;
+  overflow-x: scroll;
+  /* Scrollbar hidden (IE・Edge) */
+  -ms-overflow-style: none;
+  /* Scrollbar hidden (Firefox) */
+  scrollbar-width: none;
+}
+
+.title::-webkit-scrollbar,
+.album::-webkit-scrollbar,
+.fs_album::-webkit-scrollbar {
+  /* Scrollbar hidden (Chrome・Safari) */
+  display: none;
+}
