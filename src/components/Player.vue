@@ -1,19 +1,27 @@
 <script setup lang="ts">
 import { YoutubeIframe } from '@vue-youtube/component';
-import { ref, computed, onUnmounted, nextTick } from 'vue';
+import { ref, computed, onUnmounted, nextTick, watch } from 'vue';
 import queue from '../queue';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiRepeatOnce, mdiRepeatOff } from '@mdi/js';
 
-// let videoId = ref('zxt-_P_WXtM'); // example of long titleName
-// let videoId = ref('XAwXaGQwoZ0');  // example of short titleName
+// YouTube player instance
 const player = ref<any>(null);
+
+// Video time
 const nowTime = ref(0);
 const endTime = ref(0);
-let title = ref();
-let titleName = ref();
 const intervalId = ref<number | null>(null);
 const isPlaying = ref(false);
+
+// Video title
+const title = ref();
+const titleName = ref();
+
+// Album info
 let albumTitle = queue.get_albumTitle();
 
+// Title scrolling
 const titleElement = ref<HTMLElement | null>(null);
 const needsScroll = ref(false);
 const parentWidth = ref(0);
@@ -22,58 +30,75 @@ const isAnimating = ref(false);
 const SCROLL_SPEED = 40; // px/s
 const WAIT_TIME = 2000; // ms
 
+// Fullscreen mode
 const isFullscreen = ref(false);
+const animationClass = ref("");
 
+// Toggle fullscreen mode
 const toggleFullscreen = () => {
   isFullscreen.value = !isFullscreen.value;
 };
 
+// Watch fullscreen state changes
+watch(isFullscreen, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    animationClass.value = newVal ? "slide-up" : "slide-down";
+    
+    // Remove animation class after transition
+    setTimeout(() => {
+      animationClass.value = "";
+    }, 250);
+  }
+});
+
+// Toggle play/pause
 const togglePlay = async () => {
-  player.value?.togglePlay(); // Change play-pause
+  player.value?.togglePlay();
 };
 
+// When player is ready
 const onReady = (event: { target: any }) => {
-  endTime.value = Math.floor(event.target.getDuration()); // Get total time and video title
+  endTime.value = Math.floor(event.target.getDuration());
   title.value = event.target.getVideoData();
   titleName.value = title.value['title'];
 
-  nextTick(() => { // Determine if scrolling is necessary
-  if (titleElement.value) {
-    parentWidth.value = titleElement.value.parentElement?.offsetWidth || 0;
-    textWidth.value = titleElement.value.scrollWidth;
-    needsScroll.value = textWidth.value > parentWidth.value;
+  nextTick(() => {
+    if (titleElement.value) {
+      parentWidth.value = titleElement.value.parentElement?.offsetWidth || 0;
+      textWidth.value = titleElement.value.scrollWidth;
+      needsScroll.value = textWidth.value > parentWidth.value;
 
-    if (needsScroll.value) {
-      startScrolling();
+      if (needsScroll.value) {
+        startScrolling();
+      }
     }
-  }
-});
+  });
 };
 
-// Calculate the distance to scroll
+// Compute animation duration
 const animationDuration = computed(() => {
-  const distance = textWidth.value;
-  return needsScroll.value ? distance / SCROLL_SPEED : 0;
+  return needsScroll.value ? textWidth.value / SCROLL_SPEED : 0;
 });
 
-// scrolling function
+// Start scrolling if needed
 const startScrolling = async () => {
   if (!needsScroll.value) return;
   await new Promise(resolve => setTimeout(resolve, WAIT_TIME));
   isAnimating.value = true;
 };
 
-// When the playback state is changed
+// Handle video state changes
 const onStateChange = (event: { target: any; data: number }) => {
-  if (event.data === 1) { // start
-    isPlaying.value = true; // play-pause-button
-    intervalId.value = window.setInterval(() => { // Get current time per 250ms
+  if (event.data === 1) { // Playing
+    isPlaying.value = true;
+    intervalId.value = window.setInterval(() => {
       nowTime.value = Math.floor(event.target.getCurrentTime());
     }, 250);
-  } else if (event.data === 0) { // end(0)
+  } else if (event.data === 0) { // End
+    isPlaying.value = false;
     queue.get_next();
-  } else if (event.data === 2) { // stop (2)
-    isPlaying.value = false; // play-pause-button
+  } else if (event.data === 2) { // Paused
+    isPlaying.value = false;
     if (intervalId.value !== null) {
       clearInterval(intervalId.value);
       intervalId.value = null;
@@ -82,18 +107,18 @@ const onStateChange = (event: { target: any; data: number }) => {
   albumTitle = queue.get_albumTitle();
 };
 
-// Format to mm:ss
+// Format time as mm:ss
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
 
-// Get formatted time with computed
+// Computed formatted time
 const formattedNowTime = computed(() => formatTime(nowTime.value));
 const formattedEndTime = computed(() => formatTime(endTime.value));
 
-// Clear setInterval when component is destroyed
+// Clear interval on component unmount
 onUnmounted(() => {
   if (intervalId.value !== null) {
     clearInterval(intervalId.value);
@@ -104,26 +129,37 @@ const renderKey = queue.get_playerRenderKey();
 </script>
 
 <template>
-  <div :class="{ 'container': !isFullscreen, 'fscontainer': isFullscreen }" :key="renderKey">
+  <div 
+    :class="[
+      isFullscreen ? 'fscontainer' : 'container',
+      animationClass
+    ]" 
+    :key="renderKey"
+  >
     <youtube-iframe
-      :video-id=queue.get_nowSong()
+      :video-id="queue.get_nowSong()"
       :player-vars="{
         autoplay: 1,
         iv_load_policy: 3,
-        loop: 1,
+        loop: 0,
         controls: 0,
         playsinline: 1,
         rel: 0
-        }"
+      }"
       ref="player"
       @ready="onReady" 
-      @state-change="onStateChange" />
+      @state-change="onStateChange" 
+    />
+
     <div class="info_box">
+      <!-- Video title -->
       <div class="title" @click="toggleFullscreen">
-        <div ref="titleElement"
-            class="scroll-container"
-            :class="{ scrolling: isAnimating }"
-            :style="isAnimating ? `--animation-duration: ${animationDuration}s;` : ''">
+        <div 
+          ref="titleElement"
+          class="scroll-container"
+          :class="{ scrolling: isAnimating }"
+          :style="isAnimating ? `--animation-duration: ${animationDuration}s;` : ''"
+        >
           <span v-if="needsScroll" class="scroll-text">
             {{ titleName }}&nbsp;&nbsp;&nbsp;{{ titleName }}
           </span>
@@ -132,16 +168,28 @@ const renderKey = queue.get_playerRenderKey();
           </span>
         </div>
       </div>
-      <div class="album">{{albumTitle}}</div>
+
+      <!-- Time and album info -->
       <div class="time_container">
         <div class="nowtime">{{ formattedNowTime }}</div>
         <div class="endtime">{{ formattedEndTime }}</div>
+        <div class="album">{{ albumTitle }}</div>
       </div> 
+
+      <div class="fs_album_container">
+        <div class="fs_album">{{ albumTitle }}</div>
+        <div class="fs_loop" @click="queue.onLoopButton()">
+          <SvgIcon type="mdi" :path="queue.isLoop.value ? mdiRepeatOnce : mdiRepeatOff" />
+        </div>
+      </div>
+
       <div class="fs_time_container">
         <div class="nowtime">{{ formattedNowTime }}</div>
         <div class="endtime">{{ formattedEndTime }}</div>
       </div>
     </div>
+
+    <!-- Play/Pause button -->
     <button @click="togglePlay" class="play-pause-button">
       <div class="play-pause-icon" :class="{ playing: isPlaying }">
         <div class="bar bar-left"></div>
@@ -149,10 +197,8 @@ const renderKey = queue.get_playerRenderKey();
       </div>
     </button>
   </div>
-  <button @click="queue.onLoopButton()" class="toggle-btn-loop">
-    Loop
-  </button>
 </template>
+
 
 <style scoped>
 /* overall frame */
@@ -170,7 +216,6 @@ const renderKey = queue.get_playerRenderKey();
   padding-top: clamp(1px, 2vw, 10px);
   padding-bottom: clamp(1px, 2vw, 10px);
   flex-direction: row;
-  animation: slideDown 0.25s ease forwards;
 }
 
 .fscontainer {
@@ -179,6 +224,13 @@ const renderKey = queue.get_playerRenderKey();
   align-items: center;
   padding: 30px;
   background: #000000;
+}
+
+.slide-down {
+  animation: slideDown 0.25s ease forwards;
+}
+
+.slide-up {
   animation: slideUp 0.25s ease forwards;
 }
 
@@ -219,13 +271,14 @@ const renderKey = queue.get_playerRenderKey();
 
 .fscontainer .info_box {
   position: relative;
-  top: 55px;
+  top: 10px;
   margin: 5px;
   width: 100%;
   max-width: 500px;
 }
 
 .title {
+  cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
@@ -284,12 +337,56 @@ const renderKey = queue.get_playerRenderKey();
   opacity: 1;
 }
 
+.fs_loop {
+  cursor: pointer;
+}
+
 .container .album {
+  font-family: "Poppins", "Noto Sans JP", "Helvetica Neue", "Helvetica", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: clamp(1.5px, calc(3vw - 1px), 15px);
+  margin-left: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* Scrollbar hidden (IE・Edge) */
+  scrollbar-width: none; /* Scrollbar hidden (Firefox) */
+}
+
+.container .album::-webkit-scrollbar{ /* Scrollbar hidden (Chrome・Safari) */
+  display: none;
+}
+
+.container .fs_album {
   font-size: 0;
 }
 
 .fscontainer .album {
+  font-size: 0;
+}
+
+.container .fs_album_container {
+  font-size: 0;
+  display: none;
+}
+
+.fscontainer .fs_album_container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   font-size: clamp(2px, calc(4vw - 1.3px), 20px);
+}
+
+.fscontainer .fs_album {
+  margin-right: 40px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* Scrollbar hidden (IE・Edge) */
+  scrollbar-width: none; /* Scrollbar hidden (Firefox) */
+}
+
+.container .fs_album::-webkit-scrollbar{ /* Scrollbar hidden (Chrome・Safari) */
+  display: none;
 }
 
 .container .queue {
@@ -361,7 +458,7 @@ const renderKey = queue.get_playerRenderKey();
 
 .fscontainer .play-pause-button {
   position: relative;
-  top: 55px;
+  top: 35px;
 }
 
 .play-pause-icon {
@@ -394,17 +491,5 @@ const renderKey = queue.get_playerRenderKey();
 .playing .bar-right {
   clip-path: inset(0 0 0 0);
   width: 0.5em;
-}
-
-
-.toggle-btn-loop {
-  position: fixed;
-  bottom: 90px;
-  left: 60px;
-  background: #4c4c4c;
-  color: #ffffff;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
 }
 </style>

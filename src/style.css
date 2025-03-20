@@ -33,6 +33,7 @@ body {
   background-color: #1f1f1f;
   -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0) 100%);
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0) 100%);
+  z-index: -10;
 }
 
 .title_bar p {
@@ -56,6 +57,7 @@ body {
   width: 80px;
   height: 55px;
   cursor: pointer;
+  z-index: -10;
 }
 
 .hamburger_btn .line {
@@ -157,7 +159,6 @@ body {
 
 .fscontainer iframe {
   position: relative;
-  top: 55px;
   margin-bottom: 5px;
   width: 100%;
   max-width: 500px;

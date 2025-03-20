@@ -39,43 +39,43 @@
   {
     "albumArt": "/AlbumArts/Featured_Original_Soundtrack.png",
     "albumTitle": {
-      "ja": "原神OST(公式)",
+      "ja": "原神OST(公式)あああああああああああああああああああああああ",
       "en": "Genshin-OST(Official)"
     },
-    "songs":[
+    "songs": [
       {
-        "title":{
+        "title": {
           "ja": "スペシャルEP「幽谷の舟唄」"
         },
         "videoId": "QK7ZG2JXYB4"
       },
       {
-        "title":{
-          "ja":"輝く星星Vol.5"
+        "title": {
+          "ja": "輝く星星Vol.5"
         },
         "videoId": "rnQvbUSf1TM"
       },
       {
-        "title":{
-          "ja":"流星の奇跡Vol.3"
+        "title": {
+          "ja": "流星の奇跡Vol.3"
         },
-        "videoId":"q6V8_s7F-1A"
+        "videoId": "q6V8_s7F-1A"
       },
       {
-        "title":{
+        "title": {
           "ja": "真珠の歌4 集う光彩"
         },
         "videoId": "a657IulU7g0"
       },
       {
-        "title":{
-          "ja":"真珠の歌4 言葉なき歌"
+        "title": {
+          "ja": "真珠の歌4 言葉なき歌"
         },
         "videoId": "8Is8VZ7kXCc"
       },
       {
-        "title":{
-          "ja":"真珠の歌 真夏の歌"
+        "title": {
+          "ja": "真珠の歌 真夏の歌"
         },
         "videoId": "5Xj4cxvNxkk"
       }

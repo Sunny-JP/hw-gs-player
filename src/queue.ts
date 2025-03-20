@@ -1,5 +1,5 @@
 /*
-This Script manage the queue for play.
+This Script manages the queue for play.
 */
 
 export interface Queue {
@@ -9,42 +9,37 @@ export interface Queue {
 
 import { ref } from "vue";
 
-
 let queue: Queue[] = [];
 let albumTitle: string = "Unknown Album";
 let nextSong;
 let playerRenderKey = ref(0);
-let isLoop: boolean = false;
+let isLoop = ref(false);
 
 function get_albumTitle(): string {
     return albumTitle;
 }
 
-function get_next(): (string | null) {
+function get_next(): string | null {
     console.log("get_next was called");
-    if (isLoop) {
+    if (isLoop.value) {
         playerRenderKey.value += 1;
-        return queue[0].videoId;
+        return queue[0]?.videoId || null;
     } else {
-        if (queue.length == 1) {
+        if (queue.length === 1) {
             console.log("queue was ended");
             return null;
         } else {
             nextSong = queue[1].videoId;
             queue.shift();
-            console.log("i will play" + nextSong);
+            console.log("i will play " + nextSong);
             playerRenderKey.value += 1;
             return nextSong;
         }
-    };
-};
-
-function get_nowSong(): (string|undefined) {
-    if(queue.length < 1) {
-        return undefined
-    } else {
-        return queue[0].videoId;
     }
+}
+
+function get_nowSong(): string | undefined {
+    return queue.length > 0 ? queue[0].videoId : undefined;
 }
 
 function add_album(Album: Queue[], AlbumTitle: string) {
@@ -57,21 +52,31 @@ function add_album(Album: Queue[], AlbumTitle: string) {
 function del_all() {
     queue = [];
     albumTitle = "Unknown Album";
-};
+}
 
 function get_playerRenderKey() {
     return playerRenderKey;
 }
 
 function onLoopButton() {
-    isLoop = !isLoop;
-    console.log("loop is " + isLoop);
+    isLoop.value = !isLoop.value;
+    console.log("loop is " + isLoop.value);
 }
 
-function get_queueTitleList(): (string[]) {
-    console.log("get_queueTitleList was called")
+function get_queueTitleList(): string[] {
+    console.log("get_queueTitleList was called");
     console.log(queue.map((queue) => queue.SongName));
     return queue.map((map) => map.SongName);
 }
 
-export default {get_albumTitle, get_next, get_nowSong, add_album, del_all, get_playerRenderKey, onLoopButton, get_queueTitleList };
+export default {
+    get_albumTitle,
+    get_next,
+    get_nowSong,
+    add_album,
+    del_all,
+    get_playerRenderKey,
+    onLoopButton,
+    get_queueTitleList,
+    isLoop
+};
