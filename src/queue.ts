@@ -39,7 +39,7 @@ function get_next(): string | null {
     }
 }
 
-function get_nowSong(): Queue | undefined {
+function get_nowSong(): Queue {
     const favoriteList: Queue[] = JSON.parse(localStorage.getItem("favorite") || "[]");
     for (let i = 0; i < favoriteList.length; i++) {
         if (favoriteList[i].videoId === queue[0].videoId) {
@@ -48,7 +48,7 @@ function get_nowSong(): Queue | undefined {
         }
     }
     console.log("isFavorite is " + isFavorite.value);
-    return queue.length > 0 ? queue[0] : undefined;
+    return queue.length > 0 ? queue[0] : { videoId: "", SongName: "" };
 }
 
 function add_album(Album: Queue[], AlbumTitle: string) {
