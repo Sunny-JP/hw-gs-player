@@ -1,9 +1,12 @@
 <script setup lang="ts">
     
-    let favorite_list = JSON.parse(localStorage.getItem('favorite'));
+    let favorite_list: Queue[] = [];
     if (localStorage.getItem("favorite") === null) {
         favorite_list = [{SongName: "Favotite List is Empty"}];
         console.log("Favorite List is Empty");
+    }else
+    {
+        favorite_list = JSON.parse(localStorage.getItem("favorite"));
     }
 </script>
 
