@@ -6,7 +6,7 @@
         console.log("Favorite List is Empty");
     }else
     {
-        favorite_list = JSON.parse(localStorage.getItem("favorite"));
+        favorite_list = JSON.parse(localStorage.getItem("favorite") || "");
     }
 </script>
 
