@@ -1,8 +1,8 @@
 <script setup lang="ts">
-    
+    import type { Queue } from "../queue";
     let favorite_list: Queue[] = [];
     if (localStorage.getItem("favorite") === null) {
-        favorite_list = [{SongName: "Favotite List is Empty"}];
+        favorite_list = [{SongName: "Favotite List is Empty", videoId: ""}];
         console.log("Favorite List is Empty");
     }else
     {

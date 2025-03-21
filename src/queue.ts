@@ -77,8 +77,13 @@ function get_queueTitleList(): string[] {
     console.log(queue.map((queue) => queue.SongName));
     return queue.map((map) => map.SongName);
 }
-function event_favorite(song: Queue) {
+function event_favorite(song: Queue | undefined) {
     console.log("event_favorite was called");
+    if (song === undefined) {
+        console.log("song is undefined");
+        return;
+    }
+
     if (!isFavorite.value) {
         console.log("this sons is already favorite");
         if(localStorage.getItem("favorite") === null){
