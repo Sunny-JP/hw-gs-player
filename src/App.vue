@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import Player from "./components/Player.vue";
+import { screenSaver } from "./screen-saver";
+
 const MenuButton = ref(false);
 
 const closeMenu = (event: Event) => {
@@ -12,6 +14,7 @@ const closeMenu = (event: Event) => {
 
 onMounted(() => {
   window.addEventListener("click", closeMenu);
+  screenSaver();
 });
 
 onBeforeUnmount(() => {
@@ -43,6 +46,8 @@ onBeforeUnmount(() => {
       </div>
     </nav>
   </header>
+  <div id="screenSaver" class="screen-saver">
+  </div>
   <router-view />
   <Player/>
 </template>
