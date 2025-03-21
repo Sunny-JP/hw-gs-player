@@ -134,7 +134,7 @@
 .fs_loop,
 .fs_fav {
   cursor: pointer;
-  padding-left: clamp(2px, calc(2vw), 12px);
+  padding-left: clamp(2px, calc(3vw), 16px);
   margin-top: 4px;
 }
 
