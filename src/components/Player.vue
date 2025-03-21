@@ -95,6 +95,7 @@ onUnmounted(() => {
 });
 
 const renderKey = queue.get_playerRenderKey();
+
 </script>
 
 <template>
@@ -106,7 +107,7 @@ const renderKey = queue.get_playerRenderKey();
     :key="renderKey"
   >
     <youtube-iframe
-      :video-id="queue.get_nowSong()"
+      :video-id="queue.get_nowSong().videoId"
       :player-vars="{
         autoplay: 1,
         iv_load_policy: 3,
@@ -138,8 +139,8 @@ const renderKey = queue.get_playerRenderKey();
         <div class="fs_loop" @click="queue.onLoopButton()">
           <SvgIcon type="mdi" :path="queue.isLoop.value ? mdiRepeatOnce : mdiRepeatOff" />
         </div>
-        <div class="fs_fav" @click="queue.onLoopButton()">
-          <SvgIcon type="mdi" :path="queue.isLoop.value ? mdiStarCheck : mdiStarPlusOutline" />
+        <div class="fs_fav" @click="queue.event_favorite(queue.get_nowSong())">
+          <SvgIcon type="mdi" :path="queue.isFavorite.value ? mdiStarCheck : mdiStarPlusOutline" />
         </div>
       </div>
 
