@@ -9,18 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jamescoyle/vue-icon": "^0.1.2",
-    "@mdi/js": "^7.4.47",
-    "@vue-youtube/component": "^0.0.6",
-    "@vue-youtube/core": "^0.0.6",
+    "@jamescoyle/vue-icon": "0.1.2",
+    "@mdi/js": "7.4.47",
+    "@vue-youtube/component": "0.0.6",
+    "@vue-youtube/core": "0.0.6",
     "vue": "3.5.13",
-    "vue-i18n": "^11.1.2",
-    "vue-router": "^4.5.0",
-    "vue3-cookies": "^1.0.6",
-    "vue3-flag-icons": "^0.0.3"
+    "vue-i18n": "11.1.2",
+    "vue-router": "4.5.0",
+    "vue3-flag-icons": "0.0.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "5.2.1",
+    "@vitejs/plugin-vue": "5.2.3",
     "@vue/tsconfig": "0.7.0",
     "typescript": "5.8.2",
     "vite": "6.2.2",
