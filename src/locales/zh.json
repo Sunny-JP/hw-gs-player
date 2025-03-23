@@ -1,6 +1,10 @@
 {
+  "appTitle": {
+    "name": "GS 播放器"
+  },
   "menu": {
     "top": "首页",
+    "tracklist": "曲目列表",
     "about": "关于",
     "terms": "使用条款",
     "policy": "隐私政策",

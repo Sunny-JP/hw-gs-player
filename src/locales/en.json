@@ -1,6 +1,10 @@
 {
+  "appTitle": {
+    "name": "GS Player"
+  },
   "menu": {
     "top": "Top",
+    "tracklist": "Tracklist",
     "about": "About",
     "terms": "Terms of Use",
     "policy": "Privacy Policy",

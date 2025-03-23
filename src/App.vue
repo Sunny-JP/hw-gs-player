@@ -13,7 +13,7 @@ const closeMenu = (event: Event) => {
   }
 };
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 const changeLanguage = (lang: string) => {
   locale.value = lang;
   localStorage.setItem("selectedLanguage", lang);
@@ -21,6 +21,7 @@ const changeLanguage = (lang: string) => {
 
 const updateBodyClass = () => {
   document.body.className = `locale-${locale.value}`;
+  document.title = t('appTitle.name');
 };
 
 watch(locale, updateBodyClass);
@@ -44,7 +45,7 @@ onBeforeUnmount(() => {
   <header>
     <nav>
       <div class="title_bar">
-        <p><router-link to="/">GS Player</router-link></p>
+        <p><router-link to="/">{{ $t('appTitle.name') }}</router-link></p>
       </div>
       <div class="hamburger_btn" @click.stop="MenuButton = !MenuButton">
         <span class="line line_01" :class="{ 'btn_line01': MenuButton }"></span>
@@ -54,6 +55,7 @@ onBeforeUnmount(() => {
       <div class="menu" :class="{ open: MenuButton }">
         <ul>
           <li><router-link to="/" @click="MenuButton = false">{{ $t('menu.top') }}</router-link></li>
+          <li><router-link to="/favorite" @click="MenuButton = false">{{ $t('menu.tracklist') }}</router-link></li>
           <li><router-link to="/about" @click="MenuButton = false">{{ $t('menu.about') }}</router-link></li>
           <li><router-link to="/terms" @click="MenuButton = false">{{ $t('menu.terms') }}</router-link></li>
           <li><router-link to="/policy" @click="MenuButton = false">{{ $t('menu.policy') }}</router-link></li>

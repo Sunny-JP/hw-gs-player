@@ -1,6 +1,10 @@
 {
+  "appTitle": {
+    "name": "GS 플레이어"
+  },
   "menu": {
     "top": "홈화면",
+    "tracklist": "트랙리스트",
     "about": "소개",
     "terms": "이용 약관",
     "policy": "개인정보 보호정책",
