@@ -55,6 +55,7 @@ onBeforeUnmount(() => {
         <ul>
           <li><router-link to="/" @click="MenuButton = false">{{ $t('menu.top') }}</router-link></li>
           <li><router-link to="/about" @click="MenuButton = false">{{ $t('menu.about') }}</router-link></li>
+          <li><router-link to="/favorite" @click="MenuButton = false">Favorite</router-link></li>
           <li><router-link to="/terms" @click="MenuButton = false">{{ $t('menu.terms') }}</router-link></li>
           <li><router-link to="/policy" @click="MenuButton = false">{{ $t('menu.policy') }}</router-link></li>
           <li><router-link to="/enquiries" @click="MenuButton = false">{{ $t('menu.enquiries') }}</router-link></li>

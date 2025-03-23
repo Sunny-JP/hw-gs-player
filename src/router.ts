@@ -5,6 +5,7 @@ import Enquiries from './components/Enquiries.vue';
 import Info from './components/Info.vue';
 import Policy from './components/Policy.vue';
 import Terms from './components/Terms.vue';
+import FavoriteList from './components/FavoriteList.vue';
 
 const routes = [
   { path: '/', name: 'top', component: Top },
@@ -13,6 +14,7 @@ const routes = [
   { path: '/info', name: 'info', component: Info },
   { path: '/policy', name: 'policy', component: Policy },
   { path: '/terms', name: 'terms', component: Terms },
+  {path: '/favorite', name: 'favorite', component: FavoriteList},
 ]
 
 const router = createRouter({

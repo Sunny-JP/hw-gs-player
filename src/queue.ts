@@ -11,9 +11,10 @@ import { ref } from "vue";
 
 let queue: Queue[] = [];
 let albumTitle: string = "Unknown Album";
-let nextSong;
+let nextSong: string = "";
 let playerRenderKey = ref(0);
 let isLoop = ref(false);
+let isFavorite = ref(false);
 
 function get_albumTitle(): string {
     return albumTitle;
@@ -38,8 +39,16 @@ function get_next(): string | null {
     }
 }
 
-function get_nowSong(): string | undefined {
-    return queue.length > 0 ? queue[0].videoId : undefined;
+function get_nowSong(): Queue {
+    const favoriteList: Queue[] = JSON.parse(localStorage.getItem("favorite") || "[]");
+    for (let i = 0; i < favoriteList.length; i++) {
+        if (favoriteList[i].videoId === queue[0].videoId) {
+            isFavorite.value = true;
+            break;
+        }
+    }
+    console.log("isFavorite is " + isFavorite.value);
+    return queue.length > 0 ? queue[0] : { videoId: "", SongName: "" };
 }
 
 function add_album(Album: Queue[], AlbumTitle: string) {
@@ -68,6 +77,39 @@ function get_queueTitleList(): string[] {
     console.log(queue.map((queue) => queue.SongName));
     return queue.map((map) => map.SongName);
 }
+function event_favorite(song: Queue | undefined) {
+    console.log("event_favorite was called");
+    if (song === undefined) {
+        console.log("song is undefined");
+        return;
+    }
+
+    if (!isFavorite.value) {
+        console.log("this sons is already favorite");
+        if(localStorage.getItem("favorite") === null){
+            console.log("favorite is null");
+            localStorage.setItem("favorite", JSON.stringify([song]));
+        }else{
+            console.log("favorite is "+ localStorage.getItem("favorite"));
+            let favoriteList = JSON.parse(localStorage.getItem("favorite") || "[]");
+            favoriteList.push(song);
+            localStorage.setItem("favorite", JSON.stringify(favoriteList));
+        }
+        isFavorite.value = true;
+    }
+    else {
+        console.log("this song is not favorite");
+        let favoriteList: Queue[] = JSON.parse(localStorage.getItem("favorite") || "[]");
+        for (let i = 0; i < JSON.parse(localStorage.getItem("favorite") || "[]").length; i++) {
+            if (favoriteList[i].videoId === song.videoId) {
+                favoriteList.splice(i, 1);
+                localStorage.setItem("favorite", JSON.stringify(favoriteList));
+                break;
+            }
+        }
+        isFavorite.value = false;
+    }
+}
 
 export default {
     get_albumTitle,
@@ -78,5 +120,7 @@ export default {
     get_playerRenderKey,
     onLoopButton,
     get_queueTitleList,
-    isLoop
+    event_favorite,
+    isLoop,
+    isFavorite,
 };
