@@ -25,17 +25,18 @@
 </template>
 
 <style scoped>
-.page {
-  position: absolute;
+/* default style (mobile) */
+
+/* 2column style (PC) */
+@media (min-aspect-ratio: 1/1) {
+  .fstracklist-container .page {
+  position: block;
   top: 0;
-  padding: 10px;
-  z-index: 0;
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 30px;
+  z-index: 30;
+  width: calc(50vw - 60px);
+  height: calc(100vh - 60px);
   background: #000000;
+}
 }
 </style>

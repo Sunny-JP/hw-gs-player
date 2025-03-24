@@ -115,13 +115,15 @@
 
 .fscontainer .fs_album_container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
+  margin-top: 4px;
+  width: 100%;
   font-size: clamp(2px, calc(4vw - 1.3px), 20px);
 }
 
 .fscontainer .fs_album {
-  margin-right: clamp(2px, calc(2vw), 12px);
+  margin-right: auto;
   cursor: pointer;
 }
 
@@ -134,13 +136,23 @@
 .fs_loop,
 .fs_fav {
   cursor: pointer;
-  padding-left: clamp(2px, calc(3vw), 16px);
+  padding-left: clamp(2px, 4vw, 20px);
   margin-top: 4px;
 }
 
 svg {
   width: clamp(2px, calc(6vw), 30px);
   height: clamp(2px, calc(6vw), 30px);
+}
+
+
+/* control box */
+.fscontainer .control_box {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
 }
 
 
@@ -257,4 +269,43 @@ svg {
 .fs_album::-webkit-scrollbar {
   /* Scrollbar hidden (Chrome・Safari) */
   display: none;
+}
+
+
+/* default style (mobile) */
+.layout {
+  flex: none;
+}
+
+.tracklist-container {
+  display: none;
+}
+
+.fstracklist-container {
+  display: none;
+}
+
+/* 2column style (PC) */
+@media (min-aspect-ratio: 1/1) {
+  .layout {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .fscontainer {
+    flex: none;
+    width: calc(50vw - 60px);
+    margin: 0;
+    margin-left: auto;
+    align-items: end;
+  }
+
+  .tracklist-container {
+    display: none;
+  }
+
+  .fstracklist-container {
+    display: flex;
+    flex: 1;
+  }
 }

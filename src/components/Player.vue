@@ -152,18 +152,21 @@ const renderKey = queue.get_playerRenderKey();
         </div>
       </div>
 
+      <div class="control_box">
       <!-- Play/Pause button -->
-      <button @click="togglePlay" class="play-pause-button">
-        <div class="play-pause-icon" :class="{ playing: isPlaying }">
-          <div class="bar bar-left"></div>
-          <div class="bar bar-right"></div>
-        </div>
-      </button>
+        <button @click="togglePlay" class="play-pause-button">
+          <div class="play-pause-icon" :class="{ playing: isPlaying }">
+            <div class="bar bar-left"></div>
+            <div class="bar bar-right"></div>
+          </div>
+        </button>
+      </div>
     </div>
 
     <div 
       :class="[
-        isFullscreen ? 'fstracklist-container' : 'tracklist-container'
+        isFullscreen ? 'fstracklist-container' : 'tracklist-container',
+        animationClass
       ]"
     >
       <Tracklist />
@@ -173,38 +176,4 @@ const renderKey = queue.get_playerRenderKey();
 
 <style scoped>
 @import '../player-style.css';
-
-/* デフォルトのレイアウト（横並び） */
-.layout {
-  flex: none;
-}
-
-.tracklist-container {
-  display: none;
-}
-
-.fstracklist-container {
-  display: none;
-}
-
-/* 横幅が縦幅より大きいデバイス */
-@media (min-aspect-ratio: 1/1) {
-  .layout {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .fscontainer {
-    flex: 1;
-  }
-
-  .tracklist-container {
-    display: none;
-  }
-
-  .fstracklist-container {
-    display: flex;
-    flex: 1;
-  }
-}
 </style>
