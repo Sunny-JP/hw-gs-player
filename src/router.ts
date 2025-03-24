@@ -2,19 +2,21 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Top from "./components/AlbumList.vue";
 import About from "./components/About.vue";
 import Enquiries from './components/Enquiries.vue';
+import FavoriteList from './components/FavoriteList.vue';
 import Info from './components/Info.vue';
 import Policy from './components/Policy.vue';
 import Terms from './components/Terms.vue';
-import FavoriteList from './components/FavoriteList.vue';
+import TrackList from './components/TrackList.vue';
 
 const routes = [
   { path: '/', name: 'top', component: Top },
   { path: '/about', name: 'about', component: About },
   { path: '/enquiries', name: 'enquiries', component: Enquiries },
+  { path: '/favorite', name: 'favorite', component: FavoriteList },
   { path: '/info', name: 'info', component: Info },
   { path: '/policy', name: 'policy', component: Policy },
   { path: '/terms', name: 'terms', component: Terms },
-  {path: '/favorite', name: 'favorite', component: FavoriteList},
+  { path: '/tracklist', name: 'tracklist', component: TrackList },
 ]
 
 const router = createRouter({

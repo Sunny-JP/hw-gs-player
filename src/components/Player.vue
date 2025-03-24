@@ -2,6 +2,7 @@
 import { YoutubeIframe } from '@vue-youtube/component';
 import { ref, computed, onUnmounted, watch } from 'vue';
 import queue from '../queue';
+import Tracklist from './TrackList.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiRepeatOnce, mdiRepeatOff, mdiStarCheck, mdiStarPlusOutline } from '@mdi/js';
 
@@ -99,72 +100,111 @@ const renderKey = queue.get_playerRenderKey();
 </script>
 
 <template>
-  <div 
-    :class="[
-      isFullscreen ? 'fscontainer' : 'container',
-      animationClass
-    ]" 
-    :key="renderKey"
-  >
-    <youtube-iframe
-      :video-id="queue.get_nowSong().videoId"
-      :player-vars="{
-        autoplay: 1,
-        iv_load_policy: 3,
-        loop: 0,
-        controls: 0,
-        playsinline: 1,
-        rel: 0
-      }"
-      ref="player"
-      @ready="onReady" 
-      @state-change="onStateChange" 
-    />
+  <div class="layout">
+    <div 
+      :class="[
+        isFullscreen ? 'fscontainer' : 'container',
+        animationClass
+      ]" 
+      :key="renderKey"
+    >
+      <youtube-iframe
+        :video-id="queue.get_nowSong().videoId"
+        :player-vars="{
+          autoplay: 1,
+          iv_load_policy: 3,
+          loop: 0,
+          controls: 0,
+          playsinline: 1,
+          rel: 0
+        }"
+        ref="player"
+        @ready="onReady" 
+        @state-change="onStateChange" 
+      />
 
-    <div class="info_box">
-      <!-- Video title -->
-      <div class="title" @click="toggleFullscreen">
-        {{ titleName }}
-      </div>
-
-      <!-- Time and album info -->
-      <div class="time_container">
-        <div class="nowtime">{{ formattedNowTime }}</div>
-        <div class="endtime">{{ formattedEndTime }}</div>
-        <div class="album">{{ albumTitle }}</div>
-      </div> 
-
-      <div class="fs_album_container">
-        <div class="fs_album">{{ albumTitle }}</div>
-        <div class="fs_loop" @click="queue.onLoopButton()">
-          <SvgIcon type="mdi" :path="queue.isLoop.value ? mdiRepeatOnce : mdiRepeatOff" />
+      <div class="info_box">
+        <!-- Video title -->
+        <div class="title" @click="toggleFullscreen">
+          {{ titleName }}
         </div>
-        <div class="fs_fav" @click="queue.event_favorite(queue.get_nowSong())">
-          <SvgIcon type="mdi" :path="queue.isFavorite.value ? mdiStarCheck : mdiStarPlusOutline" />
+
+        <!-- Time and album info -->
+        <div class="time_container">
+          <div class="nowtime">{{ formattedNowTime }}</div>
+          <div class="endtime">{{ formattedEndTime }}</div>
+          <div class="album">{{ albumTitle }}</div>
+        </div> 
+
+        <div class="fs_album_container">
+          <div class="fs_album">{{ albumTitle }}</div>
+          <div class="fs_loop" @click="queue.onLoopButton()">
+            <SvgIcon type="mdi" :path="queue.isLoop.value ? mdiRepeatOnce : mdiRepeatOff" />
+          </div>
+          <div class="fs_fav" @click="queue.event_favorite(queue.get_nowSong())">
+            <SvgIcon type="mdi" :path="queue.isFavorite.value ? mdiStarCheck : mdiStarPlusOutline" />
+          </div>
+        </div>
+
+        <div class="fs_time_container">
+          <div class="nowtime">{{ formattedNowTime }}</div>
+          <div class="endtime">{{ formattedEndTime }}</div>
         </div>
       </div>
 
-      <div class="fs_time_container">
-        <div class="nowtime">{{ formattedNowTime }}</div>
-        <div class="endtime">{{ formattedEndTime }}</div>
-      </div>
+      <!-- Play/Pause button -->
+      <button @click="togglePlay" class="play-pause-button">
+        <div class="play-pause-icon" :class="{ playing: isPlaying }">
+          <div class="bar bar-left"></div>
+          <div class="bar bar-right"></div>
+        </div>
+      </button>
     </div>
 
-    <!-- Play/Pause button -->
-    <button @click="togglePlay" class="play-pause-button">
-      <div class="play-pause-icon" :class="{ playing: isPlaying }">
-        <div class="bar bar-left"></div>
-        <div class="bar bar-right"></div>
-      </div>
-    </button>
+    <div 
+      :class="[
+        isFullscreen ? 'fstracklist-container' : 'tracklist-container'
+      ]"
+    >
+      <Tracklist />
+    </div>
   </div>
-
-  <!-- song list 
-  <div class="song_list">
-  </div>
-  -->
 </template>
 
 <style scoped>
 @import '../player-style.css';
+
+/* デフォルトのレイアウト（横並び） */
+.layout {
+  flex: none;
+}
+
+.tracklist-container {
+  display: none;
+}
+
+.fstracklist-container {
+  display: none;
+}
+
+/* 横幅が縦幅より大きいデバイス */
+@media (min-aspect-ratio: 1/1) {
+  .layout {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .fscontainer {
+    flex: 1;
+  }
+
+  .tracklist-container {
+    display: none;
+  }
+
+  .fstracklist-container {
+    display: flex;
+    flex: 1;
+  }
+}
 </style>
