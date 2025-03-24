@@ -2,6 +2,29 @@
 import AlbumList from '../assets/AlbumsList.json';
 import queue, { type Queue } from '../queue';
 
+let Albums = AlbumList;
+let favorite_list: Queue[] = [];
+if (localStorage.getItem("favorite") === null) {
+    favorite_list = [{SongName: "Favotite List is Empty", videoId: ""}];
+    console.log("Favorite List is Empty");
+}else
+{
+    favorite_list = JSON.parse(localStorage.getItem("favorite") || "");
+}
+interface Songs {
+  title:{ja: string,en: string};
+  videoId: string
+}
+let songs_from_favoriteList: Songs[] = [];
+favorite_list.map((song, ) => {
+  songs_from_favoriteList.push({title:{ja:song.SongName,en:song.SongName},videoId:song.videoId});
+})
+
+if(Albums[Albums.length -1].albumTitle.en == "FavoriteList"){
+  Albums.pop();
+}
+Albums.push({albumTitle:{en:"FavoriteList",ja:"お気に入り"}, songs:songs_from_favoriteList})
+
 function add_play_album(albumIndex: number) {
   console.log("The Album will play! The Album index is " + albumIndex);
   const albumSongList: Queue[] = AlbumList[albumIndex].songs.map((songs) => {
