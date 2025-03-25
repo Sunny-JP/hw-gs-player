@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { YoutubeIframe } from '@vue-youtube/component';
-import { ref, computed, onMounted, onUnmounted, watch, nextTick, defineEmits } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch, nextTick} from 'vue';
 import queue from '../queue';
 import Tracklist from './TrackList.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
