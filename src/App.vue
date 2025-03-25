@@ -6,6 +6,8 @@ import { useI18n } from 'vue-i18n';
 import { screenSaver } from "./screen-saver";
 
 const MenuButton = ref(false);
+const isFullscreen = ref(false);
+
 const closeMenu = (event: Event) => {
   const target = event.target as HTMLElement;
   if (!target.closest(".menu") && !target.closest(".hamburger_btn")) {
@@ -42,7 +44,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header>
+  <header v-if="!isFullscreen">
     <nav>
       <div class="title_bar">
         <p><router-link to="/">{{ $t('appTitle.name') }}</router-link></p>
@@ -76,5 +78,5 @@ onBeforeUnmount(() => {
   <div id="screenSaver" class="screen-saver">
   </div>
   <router-view />
-  <Player/>
+  <Player :isFullscreen="isFullscreen" @update:isFullscreen="isFullscreen = $event" />
 </template>

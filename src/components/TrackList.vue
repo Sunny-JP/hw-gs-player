@@ -35,7 +35,7 @@
   padding: 30px;
   z-index: 30;
   width: calc(50vw - 60px);
-  height: calc(100vh - 60px);
+  height: calc(100% - 60px);
   background: #000000;
 }
 }

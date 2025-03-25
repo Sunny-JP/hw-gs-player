@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { YoutubeIframe } from '@vue-youtube/component';
-import { ref, computed, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch, nextTick, defineEmits } from 'vue';
 import queue from '../queue';
 import Tracklist from './TrackList.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiRepeatOnce, mdiRepeatOff, mdiStarCheck, mdiStarPlusOutline } from '@mdi/js';
+
+// define Emit event
+const emit = defineEmits(["update:isFullscreen"]);
 
 // YouTube player instance
 const player = ref<any>(null);
@@ -25,10 +28,12 @@ let albumTitle = queue.get_albumTitle();
 // Fullscreen mode
 const isFullscreen = ref(false);
 const animationClass = ref("");
+const fscontainer = ref<HTMLDivElement | null>(null);
 
 // Toggle fullscreen mode
 const toggleFullscreen = () => {
   isFullscreen.value = !isFullscreen.value;
+  emit("update:isFullscreen", isFullscreen.value);
 };
 
 // Watch fullscreen state changes
@@ -40,6 +45,7 @@ watch(isFullscreen, (newVal, oldVal) => {
     setTimeout(() => {
       animationClass.value = "";
     }, 250);
+    adjustScale();
   }
 });
 
@@ -88,8 +94,37 @@ const formatTime = (time: number) => {
 const formattedNowTime = computed(() => formatTime(nowTime.value));
 const formattedEndTime = computed(() => formatTime(endTime.value));
 
-// Clear interval on component unmount
+// Adjust scale
+const adjustScale = async () => {
+  await nextTick();
+
+  if (!isFullscreen.value) { // Reset scale if not full screen
+    document.body.style.transform = "";
+    document.body.style.transformOrigin = "";
+    return;
+  }
+
+  if (fscontainer.value) {
+    const containerHeight = fscontainer.value.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const scaleFactor = Math.min(1, windowHeight / containerHeight);
+
+    document.body.style.transform = `scale(${scaleFactor})`; // Apply scale to body
+    document.body.style.transformOrigin = "top center"; // scaling origin point
+  }
+};
+
+// Add event listeners for resize and orientation change
+onMounted(() => {
+  window.addEventListener("resize", adjustScale); // Recalculate scale when resizing window
+  window.addEventListener("orientationchange", adjustScale); // R-s-w changing screen orientation
+  adjustScale();
+});
+
+// Remove event listeners on unmount
 onUnmounted(() => {
+  window.removeEventListener("resize", adjustScale);
+  window.removeEventListener("orientationchange", adjustScale);
   if (intervalId.value !== null) {
     clearInterval(intervalId.value);
   }
@@ -102,6 +137,7 @@ const renderKey = queue.get_playerRenderKey();
 <template>
   <div class="layout">
     <div 
+      ref="fscontainer" 
       :class="[
         isFullscreen ? 'fscontainer' : 'container',
         animationClass
