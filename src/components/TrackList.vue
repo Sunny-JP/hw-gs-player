@@ -1,24 +1,19 @@
+<script setup lang="ts">
+import queue from '../queue';
+const queueTitleList = queue.get_queueTitleList();
+</script>
+
 <template>
   <div class="page">
     <h1>Tracklist</h1>
     <table>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Track1</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Track2</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Track3</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Track4</td>
-        </tr>
+        <div v-for="(Title,index) in queueTitleList">
+          <tr>
+            <td>{{ index }}</td>
+            <td>{{ Title }}</td>
+          </tr>
+        </div>
       </tbody>
     </table>
   </div>
