@@ -3,71 +3,64 @@ This Script manages the queue for play.
 */
 
 import { ref } from "vue";
-import { useI18n } from "vue-i18n";
 
 export interface Queue {
     videoId: string;
     SongName: string;
 }
 
-const queue = ref<Queue[]>([]);
+let queue: Queue[] = [];
 const albumTitle = ref<string>("Unknown Album");
-const nextSong = ref<string>("");
+let nextSong: string= "";
 const playerRenderKey = ref(0);
 const isLoop = ref(false);
 const isFavorite = ref(false);
+let songIndex:number = 0;
 
 function get_albumTitle(): string {
     return albumTitle.value;
 }
 
-function get_next(): string | null {
+function get_next(){
     console.log("get_next was called");
     if (isLoop.value) {
+        console.log("loop is true");
         playerRenderKey.value += 1;
-        return queue.value[0]?.videoId || null;
     } else {
-        if (queue.value.length === 1) {
+        songIndex++;
+        if (queue[songIndex] === null) {
             console.log("queue was ended");
-            return null;
         } else {
-            nextSong.value = queue.value[1].videoId;
-            queue.value.shift();
-            console.log("i will play " + nextSong.value);
+            nextSong = queue[songIndex].videoId;
+            console.log("i will play " + nextSong);
             playerRenderKey.value += 1;
-            return nextSong.value;
         }
     }
 }
 
 function get_nowSong(): Queue {
-    const { t } = useI18n();
-
     const favoriteList: Queue[] = JSON.parse(localStorage.getItem("favorite") || "[]");
     for (let i = 0; i < favoriteList.length; i++) {
-        if (favoriteList[i].videoId === queue.value[0]?.videoId) {
+        if (favoriteList[i].videoId === queue[songIndex]?.videoId) {
             isFavorite.value = true;
             break;
+        }else{
+            isFavorite.value = false;
         }
     }
-    console.log("isFavorite is " + isFavorite.value);
-
-    const currentSong = queue.value.length > 0 ? queue.value[0] : { videoId: "", SongName: "" };
-    return {
-        ...currentSong,
-        SongName: t(currentSong.SongName),
-    };
+    const currentSong: Queue = queue[songIndex];
+    return currentSong;
 }
 
 function add_album(Album: Queue[], AlbumTitle: string) {
-    queue.value = [...Album];
+    queue = [...Album];
     albumTitle.value = AlbumTitle;
-    console.log(queue.value.map((queue) => queue.SongName));
+    console.log(queue.map((queue) => queue.SongName));
     playerRenderKey.value += 1;
 }
 
 function del_all() {
-    queue.value = [];
+    queue = [];
     albumTitle.value = "Unknown Album";
 }
 
@@ -82,8 +75,8 @@ function onLoopButton() {
 
 function get_queueTitleList(): string[] {
     console.log("get_queueTitleList was called");
-    console.log(queue.value.map((queue) => queue.SongName));
-    return queue.value.map((map) => map.SongName);
+    console.log(queue.map((queue) => queue.SongName));
+    return queue.map((map) => map.SongName);
 }
 
 function event_favorite(song: Queue | undefined) {
@@ -119,6 +112,12 @@ function event_favorite(song: Queue | undefined) {
     }
 }
 
+function play_in_queue(recivedIndex: number) {
+    songIndex = recivedIndex;
+    console.log("songIndex is "+songIndex+"(in play_in_queue()")
+    playerRenderKey.value++;
+}
+
 export default {
     get_albumTitle,
     get_next,
@@ -129,6 +128,7 @@ export default {
     onLoopButton,
     get_queueTitleList,
     event_favorite,
+    play_in_queue,
     isLoop,
     isFavorite,
     queue,

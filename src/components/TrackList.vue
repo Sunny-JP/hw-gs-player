@@ -10,7 +10,7 @@ const queueTitleList = computed(() => queue.get_queueTitleList());
     <h1>{{ $t('menu.tracklist') }}</h1>
     <table>
       <tbody>
-        <tr v-for="(Title, index) in queueTitleList" :key="index">
+        <tr v-for="(Title, index) in queueTitleList" :key="index" @click="queue.play_in_queue(index)">
           <td class="index">{{ String(index).padStart(3, '0') }}</td>
           <td class="title">{{ Title }}</td>
         </tr>
