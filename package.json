@@ -14,7 +14,7 @@
     "@vue-youtube/component": "0.0.6",
     "@vue-youtube/core": "0.0.6",
     "vue": "3.5.13",
-    "vue-i18n": "11.1.2",
+    "vue-i18n": "11.3.0",
     "vue-router": "4.5.0",
     "vue3-flag-icons": "0.0.3"
   },
